@@ -4,15 +4,15 @@ pipeline {
         AWS_REGION="${aws_region}"
     }
     stages {
-        stage('Maven Build') {
+        stage('Maven Compile') {
             steps {        
                 echo "Start Build"
-                sh 'mvn clean install'
+                sh 'mvn clean compile'
                 echo "End Build"
 		    }
         }	
 	
-	    stage('Test') {
+	    stage('Maven Test') {
             steps {
                 echo "Start Test"        
 			    sh 'mvn test'		
@@ -20,7 +20,7 @@ pipeline {
             }
         }
     
-        stage('Package') {
+        stage('Maven Package') {
             steps {
                 echo "Start Package"
                 sh 'mvn package -DskipTests'
@@ -32,10 +32,10 @@ pipeline {
             steps {
                 echo "Start Docker"
                     sh '''
-                    aws ecr create-repository --repository-name s3_file_uploader --image-scanning-configuration scanOnPush=true --region us-east-1 || true
-                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 643171609537.dkr.ecr.us-east-1.amazonaws.com
-                    docker build . -t  643171609537.dkr.ecr.us-east-1.amazonaws.com/s3_file_uploader:latest
-                    docker tag 643171609537.dkr.ecr.us-east-1.amazonaws.com/s3_file_uploader:latest 643171609537.dkr.ecr.us-east-1.amazonaws.com/s3_file_uploader:latest
+                    aws ecr create-repository --repository-name ${process} --image-scanning-configuration scanOnPush=true --region ${aws_region} || true
+                    aws ecr get-login-password --region ${aws_region} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com
+                    docker build . -t  ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
+                    docker tag ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag} ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     ''' 
                 
                 echo "End Docker"
@@ -45,7 +45,10 @@ pipeline {
         stage('AWS Deploy') {
             steps {
                 echo "Start AWS Deploy"
-                    sh 'docker push 643171609537.dkr.ecr.us-east-1.amazonaws.com/s3_file_uploader:latest'
+                    sh '''
+                    docker push ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
+                    MANIFEST=$(aws ecr batch-get-image --repository-name ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com --image-ids imageTag=${image_tag} --output json | jq --raw-output --join-output '.images[0].imageManifest')
+                    '''
                 echo "End AWS_Deploy"
             }
         }
