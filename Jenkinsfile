@@ -21,20 +21,13 @@ pipeline {
             }
         }
     
-        stage('package') {
+        stage('Package') {
             steps {
                 sh 'mvn package -DskipTests'
             }
-        }
+        }  
 
-        post {
-            // Archive the jar file.
-            success {
-                archiveArtifacts 'target/*.jar'
-            }
-    
-
-        stage('Docker build') {
+        stage('Docker Build') {
             steps {
                 echo "Start Docker..."
                     sh '''
@@ -58,5 +51,11 @@ pipeline {
             }
         }
 
+    }
+    post {
+        // Archive the jar file.
+        success {
+            archiveArtifacts 'target/*.jar'
+        }
     }
 }
