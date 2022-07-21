@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        AWS_REGION =$aws_region
+        AWS_REGION="${aws_region}"
     }
     stages {
         stage('Maven Build') {
@@ -51,24 +51,24 @@ pipeline {
         }
 
         stage('Terraform Build') {
-            echo "Start Terraform Build"
-                sh '''
-                export TF_VAR_aws_account_id=$aws_account_id
-                export TF_VAR_aws_region=$aws_region 
-                export TF_VAR_vpc_cidr=$vpc_cidr
-                export TF_VAR_subnet_a_cidr=$subnet_a_cidr
-                export TF_VAR_subnet_b_cidr=$subnet_b_cidr
-                export TF_VAR_image_tag=$image_tag
-                export TF_VAR_process=$process
-                cd terraform/
-                terraform init -input=false
-                terraform plan -out=tfplan -input=false
-                terraform apply -input=false tfplan
-                '''
-            echo "End Terraform Build"
-
+            steps {
+                echo "Start Terraform Build"
+                    sh '''
+                    export TF_VAR_aws_account_id=$aws_account_id
+                    export TF_VAR_aws_region=$aws_region 
+                    export TF_VAR_vpc_cidr=$vpc_cidr
+                    export TF_VAR_subnet_a_cidr=$subnet_a_cidr
+                    export TF_VAR_subnet_b_cidr=$subnet_b_cidr
+                    export TF_VAR_image_tag=$image_tag
+                    export TF_VAR_process=$process
+                    cd terraform/
+                    terraform init -input=false
+                    terraform plan -out=tfplan -input=false
+                    terraform apply -input=false tfplan
+                    '''
+                echo "End Terraform Build"
+            }
         }
-
     }
     post {
         // Archive the jar file.
