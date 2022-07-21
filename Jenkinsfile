@@ -37,7 +37,6 @@ pipeline {
                     docker build . -t  ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     docker tag ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag} ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     ''' 
-                
                 echo "End Docker"
             }
         }
@@ -47,7 +46,6 @@ pipeline {
                 echo "Start AWS Deploy"
                     sh '''
                     docker push ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
-                    MANIFEST=$(aws ecr batch-get-image --repository-name ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com --image-ids imageTag=${image_tag} --output json | jq --raw-output --join-output '.images[0].imageManifest')
                     '''
                 echo "End AWS_Deploy"
             }
