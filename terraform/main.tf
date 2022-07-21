@@ -147,6 +147,14 @@ resource "aws_iam_role_policy" "ecs_task_role_policy" {
       {
         Action = [
           "ecr:GetAuthorizationToken",
+          "ecr:GetRepositoryPolicy",
+          "ecr:DescribeRepositories",
+          "ecr:ListImages",
+          "ecr:DescribeImages",
+          "ecr:GetLifecyclePolicy",
+          "ecr:GetLifecyclePolicyPreview",
+          "ecr:ListTagsForResource",
+          "ecr:DescribeImageScanFindings",
           "logs:CreateLogStream",
           "logs:PutLogEvents",
           "s3:Get*",

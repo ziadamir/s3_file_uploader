@@ -67,7 +67,7 @@ pipeline {
                     cd terraform/
                     terraform init -input=false
                     terraform plan -out=tfplan.txt -input=false
-                    terraform apply -input=false tfplan
+                    terraform apply -auto-approve -input=false tfplan
                     '''
                 echo "End Terraform Build"
             }
