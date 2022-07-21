@@ -66,8 +66,8 @@ pipeline {
                     export TF_VAR_process=$process
                     cd terraform/
                     terraform init -input=false
-                    terraform plan -out=tfplan.txt -input=false
-                    terraform apply -auto-approve -input=false tfplan
+                    terraform plan -out=tfplan.out -input=false
+                    terraform apply -auto-approve -input=false tfplan.out
                     '''
                 echo "End Terraform Build"
             }
@@ -77,7 +77,7 @@ pipeline {
         // Archive the jar file.
         success {
             archiveArtifacts 'target/*.jar'
-            archiveArtifacts 'terraform/tfplan.txt'
+            archiveArtifacts 'terraform/tfplan.out'
         }
     }
 }
