@@ -55,7 +55,8 @@ pipeline {
                 echo "Start Terraform Build"
                     sh '''
                     export TF_VAR_aws_account_id=$aws_account_id
-                    export TF_VAR_aws_region=$aws_region 
+                    export TF_VAR_aws_region=$aws_region
+                    export TF_VAR_env=$env
                     export TF_VAR_vpc_cidr=$vpc_cidr
                     export TF_VAR_subnet_a_cidr=$subnet_a_cidr
                     export TF_VAR_subnet_b_cidr=$subnet_b_cidr

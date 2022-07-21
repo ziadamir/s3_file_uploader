@@ -13,6 +13,11 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
+  default_tags {
+  	tags = {
+  		environment = "${var.env}"
+  	}
+  }
 }
 
 # //////////////////////////////
@@ -26,6 +31,9 @@ variable "aws_region" {
     type = string
 }
 
+variable "env" {
+    type = string
+}
 
 variable "vpc_cidr" {
     type = string
@@ -186,10 +194,6 @@ resource "aws_iam_role" "ecs_task_role" {
       },
     ]
   })
-
-  tags = {
-    tag-key = "environment-${var.env}"
-  }
 }
 
 # //////////////////////////////
