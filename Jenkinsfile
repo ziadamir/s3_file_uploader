@@ -33,7 +33,6 @@ pipeline {
                 echo "Start Docker"
                     sh '''
                     aws ecr create-repository --repository-name ${process} --image-scanning-configuration scanOnPush=true --region ${aws_region} || true
-                    aws ecr get-login-password --region ${aws_region} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com
                     docker build . -t  ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     docker tag ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag} ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     ''' 
@@ -45,6 +44,7 @@ pipeline {
             steps {
                 echo "Start AWS Deploy"
                     sh '''
+                    aws ecr get-login-password --region ${aws_region} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com
                     docker push ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     '''
                 echo "End AWS_Deploy"
@@ -65,7 +65,7 @@ pipeline {
                     export TF_VAR_process=$process
                     cd terraform/
                     terraform init -input=false
-                    terraform plan -out=tfplan -input=false
+                    terraform plan -out=tfplan.txt -input=false
                     terraform apply -input=false tfplan
                     '''
                 echo "End Terraform Build"
@@ -76,7 +76,7 @@ pipeline {
         // Archive the jar file.
         success {
             archiveArtifacts 'target/*.jar'
-            archiveArtifacts 'terraform/tfplan*'
+            archiveArtifacts 'terraform/tfplan.txt'
         }
     }
 }
