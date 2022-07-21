@@ -31,7 +31,7 @@ pipeline {
             steps {
                 echo "Start Docker..."
                     sh '''
-                    aws ecr create-repository --repository-name s3_file_uploader --image-scanning-configuration scanOnPush=true --region us-east-1
+                    aws ecr create-repository --repository-name s3_file_uploader --image-scanning-configuration scanOnPush=true --region us-east-1 || true
                     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 643171609537.dkr.ecr.us-east-1.amazonaws.com
                     docker build . -t  643171609537.dkr.ecr.us-east-1.amazonaws.com/s3_file_uploader:1.0.0
                     docker tag 643171609537.dkr.ecr.us-east-1.amazonaws.com/s3_file_uploader:1.0.0 643171609537.dkr.ecr.us-east-1.amazonaws.com/s3_file_uploader:1.0.0
