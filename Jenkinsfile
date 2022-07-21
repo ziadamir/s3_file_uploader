@@ -5,7 +5,7 @@ pipeline {
         GITCOMMIT="${env.GIT_COMMIT}"
     }
     stages {
-        stage('Build') {
+        stage('Maven Build') {
             steps {        
                 echo "Start Build..."
                 sh 'mvn clean install'
