@@ -52,11 +52,6 @@ variable "image_tag" {
     default = "1.0.0"
 }
 
-variable "ecs_task_image_url" {
-    type = string
-    default = "${aws_account_id}.dkr.ecr.us-east-1.amazonaws.com/s3_file_uploader"
-}
-
 variable "process" {
     type = string
     default = "s3_file_uploader"
@@ -143,7 +138,7 @@ resource "aws_security_group" "ecs_service_security_group" {
 # IAM ROLE POLICY
 
 resource "aws_iam_role_policy" "ecs_task_role_policy" {
-  name = "test_policy"
+  name = "${var.process}_ecs_task_policy"
   role = aws_iam_role.ecs_task_role.id
 
   # Terraform's "jsonencode" function converts a
@@ -236,7 +231,7 @@ resource "aws_ecs_task_definition" "s3_file_uploader_task_definition" {
   container_definitions = <<TASK_DEFINITION
 [
   {
-    "image": "${var.ecs_task_image_url}:${var.image_tag}",
+    "image": "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.process}:${var.image_tag}",
     "name": "${var.process}_ecs_cluster",
     "cpu": 1024,
     "memory": 2048,
