@@ -21,7 +21,7 @@ import software.amazon.awssdk.services.s3.waiters.S3Waiter;
 
 public class S3Util {
 	
-	private static final String BUCKET = "s3-upload-input-bucket-us-east-1";
+	private static final String BUCKET = "s3-upload-input-bucket";
 	
 	public static void uploadFile(String fileName, InputStream inputStream) 
 			throws S3Exception, AwsServiceException, SdkClientException, IOException {
