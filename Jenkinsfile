@@ -33,7 +33,7 @@ pipeline {
                 echo "Start Docker Build"
                     sh '''
                     aws ecr describe-repositories --repository-names ${process} --region ${aws_region} || aws ecr create-repository --repository-name ${process} --image-scanning-configuration scanOnPush=true --region ${aws_region} 
-                    docker rmi ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
+                    docker rmi ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag} || (echo "Docker image didn't exist so nothing was removed."; exit 0)
                     docker build . -t  ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     docker tag ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag} ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     ''' 
