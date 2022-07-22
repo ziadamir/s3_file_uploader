@@ -237,7 +237,7 @@ resource "aws_ecs_task_definition" "s3_file_uploader_task_definition" {
     "name": "${var.process}_ecs_cluster",
     "cpu": 1024,
     "memory": 2048,
-    "command": ["java", "-jar", "S3FileUpload-1.0.jar"],
+    "command": ["java", "-jar", "S3FileUpload-${var.image_tag}.jar"],
 	"portMappings": [
       {
         "containerPort": 8080,

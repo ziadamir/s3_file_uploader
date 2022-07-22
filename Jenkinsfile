@@ -77,6 +77,7 @@ pipeline {
         // Archive the jar file.
         success {
             archiveArtifacts 'target/*.jar'
+            archiveArtifacts 'terraform/terraform.tfstate'
             archiveArtifacts 'terraform/tfplan.out'
         }
     }
