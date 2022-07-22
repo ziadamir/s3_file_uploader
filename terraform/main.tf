@@ -160,25 +160,14 @@ resource "aws_iam_role_policy" "ecs_task_role_policy" {
           "s3:Get*",
           "s3:Put*",
           "s3:List*",
-          "s3:Create*"
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-      {
-        Action =  [
+          "s3:Create*",
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage"
         ]
-        Effect    = "Allow"
-        Resource  =  "*"
-        Condition = {
-          "StringEquals": {
-            "aws:sourceVpc": "${aws_vpc.vpc.id}"
-            }
-          }
-      }    
+        Effect   = "Allow"
+        Resource = "*"
+      }  
     ]
   })
 }

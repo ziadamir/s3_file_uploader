@@ -4,17 +4,7 @@ FROM adoptopenjdk/openjdk11:jre-11.0.9.1_1-alpine@sha256:b6ab039066382d39cfc8439
 # Install packages needed
 RUN apk update && apk add --update --no-cache \
     tomcat-native \
-    python3 \
-    apk-cron \
-    py3-pip \
-    && pip3 install --upgrade pip \
-    && pip3 install \
-        awscli \
     && rm -rf /var/cache/apk/*
-
-# Make sure AWS cli is installed
-RUN aws --version
-
 
 # Copy jar file
 ADD target/S3FileUpload-1.0.jar S3FileUpload-1.0.jar
