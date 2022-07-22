@@ -5,7 +5,6 @@ S3FileUploader application consists of a Maven project using Spring Boot with an
 # File and folder organization
 
 ```
-+---src
 ├── Jenkinsfile
 ├── README.md
 ├── dockerfile
