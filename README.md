@@ -33,23 +33,6 @@ S3FileUploader application consists of a Maven project using Spring Boot with an
 │               └── codejava
 │                   └── aws
 │                       └── S3FileUploadApplicationTests.java
-├── target
-│   ├── classes
-│   │   ├── application.properties
-│   │   ├── net
-│   │   │   └── codejava
-│   │   │       └── aws
-│   │   │           ├── MainController.class
-│   │   │           ├── S3FileUploadApplication.class
-│   │   │           └── S3Util.class
-│   │   └── templates
-│   │       ├── message.html
-│   │       └── upload.html
-│   └── test-classes
-│       └── net
-│           └── codejava
-│               └── aws
-│                   └── S3FileUploadApplicationTests.class
 └── terraform
     └── main.tf
 ```
