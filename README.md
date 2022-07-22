@@ -41,13 +41,13 @@ S3FileUploader application consists of a Maven project using Spring Boot with an
 
 ### 2)  Jenkins server, preferably running on Amazon Linux 2, with IAM permissions to read and write from S3, ECR, ECS, CloudWatch Logs, EC2/VPC, and IAM. Jenkins server must have basic pipeline plugins installed
 
-### 3)  The following must be installed on the Jenkins server or on local for testing:
-* Java 11
-* Docker
-* Maven
-* Git
-* awscliv2
-* terraform
+### 3)  Deployment was tested with the following installed:
+* openjdk v11.0.15
+* Docker v20.10.17
+* Maven v3.8.6
+* Git v2.37.1
+* awscli v2.7.16
+* Terraform v1.2.5
 
 # Deploying locally (must have aws access keys and region configured on local system and permission to create, list and put in s3 buckets):
 ### 1) Build artifact with Maven:
