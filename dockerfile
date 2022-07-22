@@ -7,11 +7,11 @@ RUN apk update && apk add --update --no-cache \
     && rm -rf /var/cache/apk/*
 
 # Copy jar file
-ADD target/S3FileUpload-1.0.jar S3FileUpload-1.0.jar
+ADD target/S3FileUpload-1.1.jar S3FileUpload-1.1.jar
 
 # Expose port 8443 on the container
 EXPOSE 8080
 
 # Run jar file
 
-CMD "java" "-jar" "S3FileUpload-1.0.jar"
+CMD "java" "-jar" "S3FileUpload-1.1.jar"
