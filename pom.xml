@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>net.codejava</groupId>
 	<artifactId>S3FileUpload</artifactId>
-	<version>1.1</version>
+	<version>1.0</version>
 	<name>S3FileUpload</name>
 	<description>Spring Boot upload file to Amazon S3</description>
 	<properties>
