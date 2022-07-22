@@ -6,38 +6,38 @@ pipeline {
     stages {
         stage('Maven Compile') {
             steps {        
-                echo "Start Build"
+                echo "Start Maven Compile"
                 sh 'mvn clean compile'
-                echo "End Build"
+                echo "End Maven Compile"
 		    }
         }	
 	
 	    stage('Maven Test') {
             steps {
-                echo "Start Test"        
+                echo "Start Maven Test"        
 			    sh 'mvn test'		
-                echo "End Test"
+                echo "End Maven Test"
             }
         }
     
         stage('Maven Package') {
             steps {
-                echo "Start Package"
+                echo "Start Maven Package"
                 sh 'mvn package -DskipTests'
-                echo "End Package"
+                echo "End Maven Package"
             }
         }  
 
         stage('Docker Build') {
             steps {
-                echo "Start Docker"
+                echo "Start Docker Build"
                     sh '''
                     aws ecr create-repository --repository-name ${process} --image-scanning-configuration scanOnPush=true --region ${aws_region} || true
                     docker rmi ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     docker build . -t  ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     docker tag ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag} ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     ''' 
-                echo "End Docker"
+                echo "End Docker Build"
             }
         }
 
@@ -48,7 +48,7 @@ pipeline {
                     aws ecr get-login-password --region ${aws_region} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com
                     docker push ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${process}:${image_tag}
                     '''
-                echo "End AWS_Deploy"
+                echo "End AWS Deploy"
             }
         }
 
